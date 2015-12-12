@@ -2,7 +2,12 @@
 
 ### Getting Started
 
-Create cloud9 workspace: http://c9.io 
+Prerequisites:
+- AWS Account and IAM User with appropriate permissions
+-- Create IAM user, save access key and secret, permissions -> attach Administrator or PowerUser role or custom policy
+- Cloud9 account http://c9.io
+
+Create cloud9 workspace:
 
     "Custom" template (ubuntu)
     Private

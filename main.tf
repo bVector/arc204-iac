@@ -80,3 +80,11 @@ resource "statuscake_test" "web" {
     test_type = "HTTP"
     check_rate = 300
 }
+
+resource "dnsimple_record" "web" {
+  domain = "nsl.ninja"
+  name = "${var.firstname}"
+  value = "${aws_instance.web.public_ip}"
+  type = "A"
+  ttl = 3600
+}

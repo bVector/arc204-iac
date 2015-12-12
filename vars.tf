@@ -18,6 +18,13 @@ variable "firstname" {
 	description = "your first name (or handle, keep it simple)"
 }
 
+variable "dnsimple_token"{
+  description = "dnsimple api token"
+}
+variable "dnsimple_email"{
+  description = "dnsimple email address"
+}
+
 variable "aws_region" {
   description = "AWS region to launch servers."
   default = "us-west-2"

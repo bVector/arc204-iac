@@ -8,3 +8,8 @@ provider "statuscake" {
     username = "${var.statuscake_user}"
     apikey = "${var.statuscake_key}"
 }
+
+provider "dnsimple" {
+  token = "${var.dnsimple_token}"
+  email = "${var.dnsimple_email}"
+}

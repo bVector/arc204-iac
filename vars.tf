@@ -23,22 +23,39 @@ variable "aws_region" {
   default = "us-west-2"
 }
 
+variable "vpc_cidr" {
+    description = "CIDR for the whole VPC"
+    default = "10.0.0.0/16"
+}
+
+variable "public_subnet_cidr" {
+    description = "CIDR for the Public Subnet"
+    default = "10.0.0.0/24"
+}
+
+variable "private_subnet_cidr" {
+    description = "CIDR for the Private Subnet"
+    default = "10.0.1.0/24"
+}
+
 variable "key_name" {
   description = "Name of the keypair to use in EC2."
   default = "terraform"
 }
 
-variable "key_path" {
-  descriptoin = "Path to your private key."
+variable "pubkey_path" {
+  description = "Path to your private key."
+  default = "~/.ssh/id_rsa.pub"
+}
+
+variable "privkey_path" {
+  description = "Path to your private key."
   default = "~/.ssh/id_rsa"
 }
 
-# Ubuntu Precise 12.04 LTS (x64)
+# Ubuntu Precise 14.04 LTS (x64)
 variable "aws_amis" {
   default = {
-    eu-west-1 = "ami-b1cf19c6"
-    us-east-1 = "ami-de7ab6b6"
-    us-west-1 = "ami-3f75767a"
-    us-west-2 = "ami-21f78e11"
+    us-west-2 = "ami-5189a661"
   }
 }

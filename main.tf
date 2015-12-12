@@ -1,8 +1,9 @@
 # Our default security group to access
 # the instances over SSH and HTTP
 resource "aws_security_group" "arc204sg" {
-  name        = "arg204sg"
+  name        = "arc204sg"
   description = "Created by arc204 terraform state"
+  vpc_id = "${aws_vpc.default.id}"
 
   # SSH access from anywhere
   ingress {
@@ -17,21 +18,23 @@ resource "aws_security_group" "arc204sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
-  }
-
-  # outbound internet access
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags {
+    tf = "arc204"
+    }
 }
 
 resource "aws_key_pair" "auth" {
   key_name   = "terraform"
-  public_key = "${file(var.key_path)}"
+  public_key = "${file(var.pubkey_path)}"
 }
 
 resource "aws_instance" "web" {
@@ -40,10 +43,11 @@ resource "aws_instance" "web" {
   connection {
     # The default username for our AMI
     user = "ubuntu"
-    # The connection will use the local SSH agent for authentication.
+    private_key = "${file(var.privkey_path)}"
   }
 
   instance_type = "t2.micro"
+  subnet_id = "${aws_subnet.default.id}"
 
   # Lookup the correct AMI based on the region
   # we specified
@@ -65,11 +69,14 @@ resource "aws_instance" "web" {
       "sudo service nginx start"
     ]
   }
+  tags {
+    tf = "arc204"
+    }
 }
 
 resource "statuscake_test" "web" {
-    website_name = "arc204-${var.name}-${aws_instance.web.dns_name}"
-    website_url = "${aws_instance.web.dns_name}"
+    website_name = "arc204-${var.firstname} ${aws_instance.web.public_dns}"
+    website_url = "${aws_instance.web.public_dns}"
     test_type = "HTTP"
     check_rate = 300
 }
